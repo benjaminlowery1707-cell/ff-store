@@ -1,0 +1,981 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FF Store</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+    background:#05080d;
+    color:#fff;
+    font-family:Arial,Helvetica,sans-serif;
+    min-height:100vh;
+}
+header{
+    height:65px;
+    background:#0b111a;
+    border-bottom:1px solid #1c2938;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 18px;
+    position:sticky;
+    top:0;
+    z-index:100;
+}
+.logo{
+    color:#00ff88;
+    font-size:22px;
+    font-weight:900;
+}
+.menu{
+    font-size:27px;
+    cursor:pointer;
+}
+.container{
+    max-width:950px;
+    margin:auto;
+    padding:20px 14px 60px;
+}
+.hero{
+    text-align:center;
+    padding:35px 10px 25px;
+}
+.hero h1{
+    font-size:34px;
+    color:#00ff88;
+}
+.hero p{
+    color:#8e9bab;
+    margin-top:8px;
+}
+.card{
+    background:#0c131d;
+    border:1px solid #1d2b3a;
+    border-radius:16px;
+    padding:20px;
+    margin-top:18px;
+}
+.card h2{
+    margin-bottom:16px;
+}
+.categories{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+}
+.category{
+    background:#101b27;
+    border:1px solid #26394d;
+    border-radius:13px;
+    padding:18px 10px;
+    text-align:center;
+    cursor:pointer;
+    transition:.2s;
+}
+.category:hover,
+.category.active{
+    border-color:#00ff88;
+    background:#10241b;
+    transform:translateY(-2px);
+}
+.category .icon{
+    font-size:30px;
+    margin-bottom:8px;
+}
+.category b{
+    font-size:14px;
+}
+.products{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+}
+.product{
+    background:#101923;
+    border:1px solid #25374a;
+    border-radius:13px;
+    padding:17px 12px;
+    cursor:pointer;
+    text-align:center;
+    transition:.2s;
+}
+.product:hover{
+    border-color:#00ff88;
+}
+.product.active{
+    border-color:#00ff88;
+    background:#10261c;
+}
+.product .emoji{
+    font-size:29px;
+}
+.product h3{
+    margin-top:9px;
+    font-size:15px;
+}
+.product p{
+    color:#8795a5;
+    font-size:12px;
+    margin-top:5px;
+}
+.price{
+    color:#00ff88!important;
+    font-weight:bold;
+    font-size:16px!important;
+}
+label{
+    display:block;
+    color:#aeb8c5;
+    font-size:13px;
+    margin:13px 0 7px;
+}
+input,select{
+    width:100%;
+    background:#070d14;
+    color:#fff;
+    border:1px solid #293b4f;
+    border-radius:10px;
+    padding:14px;
+    outline:none;
+}
+input:focus,select:focus{
+    border-color:#00ff88;
+}
+.btn{
+    width:100%;
+    border:0;
+    border-radius:11px;
+    padding:15px;
+    margin-top:17px;
+    background:#00ff88;
+    color:#00150b;
+    font-size:16px;
+    font-weight:800;
+    cursor:pointer;
+}
+.btn.secondary{
+    background:#192735;
+    color:white;
+}
+.btn.danger{
+    background:#491919;
+    color:#ff9b9b;
+}
+.hidden{
+    display:none!important;
+}
+.summary{
+    background:#071018;
+    border:1px solid #203143;
+    border-radius:11px;
+    padding:15px;
+    line-height:1.8;
+}
+.payment-methods{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
+.method{
+    border:1px solid #293b4f;
+    border-radius:11px;
+    padding:15px;
+    text-align:center;
+    cursor:pointer;
+}
+.method.active{
+    border-color:#00ff88;
+    background:#10271d;
+}
+.qr{
+    display:flex;
+    justify-content:center;
+    margin:18px 0;
+}
+.qr img{
+    width:210px;
+    height:210px;
+    background:#fff;
+    padding:8px;
+    border-radius:12px;
+}
+.wallet{
+    background:#070d14;
+    border:1px solid #293b4f;
+    padding:13px;
+    border-radius:10px;
+    color:#00ff88;
+    word-break:break-all;
+    margin-top:8px;
+}
+.note{
+    color:#7f8d9c;
+    font-size:12px;
+    line-height:1.5;
+    margin-top:10px;
+}
+.order{
+    background:#081018;
+    border:1px solid #223345;
+    border-radius:12px;
+    padding:15px;
+    margin-top:12px;
+    line-height:1.8;
+}
+.status{
+    display:inline-block;
+    margin-top:7px;
+    padding:4px 9px;
+    border-radius:20px;
+    background:#4b3d0a;
+    color:#ffd75c;
+    font-size:12px;
+}
+.status.approved{
+    background:#0b4a2c;
+    color:#65ffb0;
+}
+.status.rejected{
+    background:#4a1616;
+    color:#ff8989;
+}
+.admin-card{
+    margin-top:12px;
+    padding:15px;
+    border:1px solid #27394c;
+    background:#081018;
+    border-radius:12px;
+}
+.admin-card button{
+    width:100%;
+    padding:12px;
+    border:0;
+    border-radius:9px;
+    margin-top:9px;
+    cursor:pointer;
+    font-weight:bold;
+}
+.approve{
+    background:#00ff88;
+    color:#00150b;
+}
+.reject{
+    background:#491919;
+    color:#ffaaaa;
+}
+footer{
+    text-align:center;
+    padding:30px;
+    color:#586574;
+    font-size:12px;
+}
+@media(max-width:700px){
+    .categories,
+    .products{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+@media(max-width:430px){
+    .hero h1{font-size:28px}
+    .categories,
+    .products{
+        grid-template-columns:1fr 1fr;
+        gap:9px;
+    }
+    .category{padding:14px 7px}
+    .product{padding:14px 8px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">FF STORE</div>
+    <div class="menu" onclick="openAdmin()">☰</div>
+</header>
+
+<div class="container">
+
+    <section class="hero">
+        <h1>Free Fire Store</h1>
+        <p>Select a product and continue to checkout</p>
+    </section>
+
+    <!-- CATEGORY -->
+    <div class="card">
+        <h2>Categories</h2>
+
+        <div class="categories">
+
+            <div class="category active"
+                 onclick="showCategory('diamonds',this)">
+                <div class="icon">💎</div>
+                <b>Diamonds</b>
+            </div>
+
+            <div class="category"
+                 onclick="showCategory('membership',this)">
+                <div class="icon">🎫</div>
+                <b>Membership</b>
+            </div>
+
+            <div class="category"
+                 onclick="showCategory('bundles',this)">
+                <div class="icon">🎁</div>
+                <b>Bundles</b>
+            </div>
+
+            <div class="category"
+                 onclick="showCategory('offers',this)">
+                <div class="icon">🔥</div>
+                <b>Special Offers</b>
+            </div>
+
+            <div class="category"
+                 onclick="showCategory('event',this)">
+                <div class="icon">🎟️</div>
+                <b>Event Items</b>
+            </div>
+
+            <div class="category"
+                 onclick="showCategory('other',this)">
+                <div class="icon">🛍️</div>
+                <b>Other Items</b>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- PRODUCTS -->
+    <div class="card">
+        <h2 id="categoryTitle">Diamonds</h2>
+        <div class="products" id="products"></div>
+    </div>
+
+    <!-- CHECKOUT -->
+    <div class="card hidden" id="checkout">
+
+        <h2>Checkout</h2>
+
+        <div class="summary" id="summary"></div>
+
+        <label>Free Fire UID</label>
+        <input
+            id="uid"
+            type="text"
+            inputmode="numeric"
+            placeholder="Enter your Free Fire UID">
+
+        <label>Player Name (optional)</label>
+        <input
+            id="playerName"
+            type="text"
+            placeholder="Enter player name">
+
+        <button class="btn" onclick="goPayment()">
+            Continue to Payment
+        </button>
+
+    </div>
+
+    <!-- PAYMENT -->
+    <div class="card hidden" id="payment">
+
+        <h2>Payment</h2>
+
+        <div class="summary" id="paymentSummary"></div>
+
+        <div class="payment-methods">
+
+            <div class="method active"
+                 onclick="setPayment('upi',this)">
+                📱 UPI
+            </div>
+
+            <div class="method"
+                 onclick="setPayment('usdt',this)">
+                ₮ USDT
+            </div>
+
+        </div>
+
+        <!-- UPI -->
+        <div id="upiBox">
+
+            <div class="qr">
+                <!-- Replace this with your own QR image -->
+                <img
+                src="https://api.qrserver.com/v1/create-qr-code/?size=210x210&data=YOUR-UPI-ID"
+                alt="UPI QR">
+            </div>
+
+            <p class="note" style="text-align:center">
+                Scan the QR and complete the exact order amount.
+            </p>
+
+        </div>
+
+        <!-- USDT -->
+        <div id="usdtBox" class="hidden">
+
+            <label>USDT Network</label>
+
+            <select id="network">
+                <option value="TRC20">TRC20</option>
+                <option value="BEP20">BEP20</option>
+                <option value="ERC20">ERC20</option>
+            </select>
+
+            <label>USDT Wallet Address</label>
+
+            <div class="wallet">
+                YOUR-USDT-WALLET-ADDRESS
+            </div>
+
+            <p class="note">
+                Send only through the selected network.
+                Replace the placeholder address with your own verified
+                payment address before publishing.
+            </p>
+
+        </div>
+
+        <label>Transaction ID / UTR</label>
+
+        <input
+            id="transaction"
+            type="text"
+            placeholder="Enter UTR / Transaction ID">
+
+        <button class="btn" onclick="submitOrder()">
+            Submit Payment
+        </button>
+
+        <button class="btn secondary" onclick="backCheckout()">
+            Back
+        </button>
+
+    </div>
+
+    <!-- ORDERS -->
+    <div class="card">
+
+        <h2>Order Status</h2>
+
+        <div id="orders">
+            <p class="note">No orders yet.</p>
+        </div>
+
+    </div>
+
+    <!-- ADMIN -->
+    <div class="card hidden" id="adminPanel">
+
+        <h2>Admin Verification</h2>
+
+        <p class="note">
+            Demo admin panel. Orders are stored only in this browser.
+        </p>
+
+        <div id="adminOrders"></div>
+
+    </div>
+
+</div>
+
+<footer>
+    © 2026 FF Store
+</footer>
+
+<script>
+
+/* =========================
+   PRODUCT DATA
+========================= */
+
+const catalog = {
+
+    diamonds: {
+        title:"Diamonds",
+        items:[
+            {name:"100 Diamonds",emoji:"💎",price:10},
+            {name:"310 Diamonds",emoji:"💎",price:30},
+            {name:"520 Diamonds",emoji:"💎",price:50},
+            {name:"1060 Diamonds",emoji:"💎",price:100},
+            {name:"2180 Diamonds",emoji:"💎",price:200},
+            {name:"5600 Diamonds",emoji:"💎",price:500}
+        ]
+    },
+
+    membership:{
+        title:"Membership",
+        items:[
+            {name:"Membership Package 1",emoji:"🎫",price:99},
+            {name:"Membership Package 2",emoji:"🎫",price:199},
+            {name:"Membership Package 3",emoji:"🎫",price:299}
+        ]
+    },
+
+    bundles:{
+        title:"Bundles",
+        items:[
+            {name:"Bundle Package 1",emoji:"🎁",price:149},
+            {name:"Bundle Package 2",emoji:"🎁",price:249},
+            {name:"Bundle Package 3",emoji:"🎁",price:399}
+        ]
+    },
+
+    offers:{
+        title:"Special Offers",
+        items:[
+            {name:"Special Offer 1",emoji:"🔥",price:79},
+            {name:"Special Offer 2",emoji:"🔥",price:149},
+            {name:"Special Offer 3",emoji:"🔥",price:299}
+        ]
+    },
+
+    event:{
+        title:"Event Items",
+        items:[
+            {name:"Event Item 1",emoji:"🎟️",price:49},
+            {name:"Event Item 2",emoji:"🎟️",price:99},
+            {name:"Event Item 3",emoji:"🎟️",price:199}
+        ]
+    },
+
+    other:{
+        title:"Other Items",
+        items:[
+            {name:"Item Package 1",emoji:"🛍️",price:59},
+            {name:"Item Package 2",emoji:"🛍️",price:129},
+            {name:"Item Package 3",emoji:"🛍️",price:249}
+        ]
+    }
+
+};
+
+let currentCategory="diamonds";
+let selectedProduct=null;
+let paymentMethod="upi";
+
+/* =========================
+   CATEGORY
+========================= */
+
+function showCategory(category,element){
+
+    currentCategory=category;
+
+    document.querySelectorAll(".category")
+    .forEach(x=>x.classList.remove("active"));
+
+    element.classList.add("active");
+
+    document.getElementById("categoryTitle").innerText=
+        catalog[category].title;
+
+    renderProducts();
+
+    document.getElementById("checkout")
+        .classList.add("hidden");
+
+    document.getElementById("payment")
+        .classList.add("hidden");
+}
+
+/* =========================
+   PRODUCTS
+========================= */
+
+function renderProducts(){
+
+    const box=document.getElementById("products");
+
+    box.innerHTML="";
+
+    catalog[currentCategory].items.forEach((item,index)=>{
+
+        box.innerHTML+=`
+
+        <div class="product"
+             onclick="selectProduct(${index})">
+
+            <div class="emoji">${item.emoji}</div>
+
+            <h3>${item.name}</h3>
+
+            <p class="price">₹${item.price}</p>
+
+        </div>
+
+        `;
+
+    });
+}
+
+function selectProduct(index){
+
+    selectedProduct=catalog[currentCategory].items[index];
+
+    document.querySelectorAll(".product")
+        .forEach(x=>x.classList.remove("active"));
+
+    document.querySelectorAll(".product")[index]
+        .classList.add("active");
+
+    document.getElementById("summary").innerHTML=`
+
+        <b>Product:</b> ${selectedProduct.name}<br>
+        <b>Category:</b> ${catalog[currentCategory].title}<br>
+        <b>Amount:</b> ₹${selectedProduct.price}
+
+    `;
+
+    document.getElementById("checkout")
+        .classList.remove("hidden");
+
+    document.getElementById("payment")
+        .classList.add("hidden");
+
+    document.getElementById("checkout")
+        .scrollIntoView({behavior:"smooth"});
+}
+
+/* =========================
+   CHECKOUT
+========================= */
+
+function goPayment(){
+
+    const uid=document.getElementById("uid")
+        .value.trim();
+
+    if(!uid){
+        alert("Please enter your Free Fire UID.");
+        return;
+    }
+
+    if(!/^[0-9]{5,15}$/.test(uid)){
+        alert("Please enter a valid UID.");
+        return;
+    }
+
+    document.getElementById("paymentSummary").innerHTML=`
+
+        <b>Product:</b> ${selectedProduct.name}<br>
+        <b>UID:</b> ${uid}<br>
+        <b>Amount:</b> ₹${selectedProduct.price}
+
+    `;
+
+    document.getElementById("payment")
+        .classList.remove("hidden");
+
+    document.getElementById("payment")
+        .scrollIntoView({behavior:"smooth"});
+}
+
+function backCheckout(){
+
+    document.getElementById("payment")
+        .classList.add("hidden");
+
+    document.getElementById("checkout")
+        .scrollIntoView({behavior:"smooth"});
+}
+
+/* =========================
+   PAYMENT METHOD
+========================= */
+
+function setPayment(method,element){
+
+    paymentMethod=method;
+
+    document.querySelectorAll(".method")
+        .forEach(x=>x.classList.remove("active"));
+
+    element.classList.add("active");
+
+    if(method==="upi"){
+
+        document.getElementById("upiBox")
+            .classList.remove("hidden");
+
+        document.getElementById("usdtBox")
+            .classList.add("hidden");
+
+    }else{
+
+        document.getElementById("upiBox")
+            .classList.add("hidden");
+
+        document.getElementById("usdtBox")
+            .classList.remove("hidden");
+    }
+}
+
+/* =========================
+   SUBMIT ORDER
+========================= */
+
+function submitOrder(){
+
+    const uid=document.getElementById("uid")
+        .value.trim();
+
+    const transaction=document.getElementById("transaction")
+        .value.trim();
+
+    if(!selectedProduct){
+        alert("Please select a product.");
+        return;
+    }
+
+    if(!uid){
+        alert("UID is required.");
+        return;
+    }
+
+    if(!transaction){
+        alert("Please enter your UTR / Transaction ID.");
+        return;
+    }
+
+    const orders=JSON.parse(
+        localStorage.getItem("ff_store_orders") || "[]"
+    );
+
+    const order={
+
+        id:"FF-"+Date.now(),
+
+        category:catalog[currentCategory].title,
+
+        product:selectedProduct.name,
+
+        price:selectedProduct.price,
+
+        uid:uid,
+
+        playerName:
+            document.getElementById("playerName").value.trim(),
+
+        payment:paymentMethod,
+
+        network:
+            paymentMethod==="usdt"
+            ?document.getElementById("network").value
+            :"",
+
+        transaction:transaction,
+
+        status:"Pending Verification",
+
+        created:new Date().toLocaleString()
+
+    };
+
+    orders.push(order);
+
+    localStorage.setItem(
+        "ff_store_orders",
+        JSON.stringify(orders)
+    );
+
+    alert(
+        "Order submitted successfully. Payment is pending verification."
+    );
+
+    document.getElementById("transaction").value="";
+
+    renderOrders();
+    renderAdmin();
+
+    document.getElementById("payment")
+        .classList.add("hidden");
+
+    document.getElementById("orders")
+        .scrollIntoView({behavior:"smooth"});
+}
+
+/* =========================
+   CUSTOMER ORDERS
+========================= */
+
+function renderOrders(){
+
+    const orders=JSON.parse(
+        localStorage.getItem("ff_store_orders") || "[]"
+    );
+
+    const box=document.getElementById("orders");
+
+    if(!orders.length){
+
+        box.innerHTML=
+            `<p class="note">No orders yet.</p>`;
+
+        return;
+    }
+
+    box.innerHTML="";
+
+    orders.slice().reverse().forEach(order=>{
+
+        let statusClass="";
+
+        if(order.status==="Approved")
+            statusClass="approved";
+
+        if(order.status==="Rejected")
+            statusClass="rejected";
+
+        box.innerHTML+=`
+
+        <div class="order">
+
+            <b>Order:</b> ${order.id}<br>
+            <b>Product:</b> ${order.product}<br>
+            <b>UID:</b> ${order.uid}<br>
+            <b>Amount:</b> ₹${order.price}<br>
+            <b>Payment:</b> ${order.payment.toUpperCase()}
+            ${order.network ? " ("+order.network+")" : ""}<br>
+            <b>Date:</b> ${order.created}
+
+            <br>
+
+            <span class="status ${statusClass}">
+                ${order.status}
+            </span>
+
+        </div>
+
+        `;
+
+    });
+}
+
+/* =========================
+   ADMIN
+========================= */
+
+function openAdmin(){
+
+    const password=prompt("Enter admin password:");
+
+    if(password!=="admin123"){
+
+        alert("Incorrect admin password.");
+
+        return;
+    }
+
+    document.getElementById("adminPanel")
+        .classList.remove("hidden");
+
+    renderAdmin();
+
+    document.getElementById("adminPanel")
+        .scrollIntoView({behavior:"smooth"});
+}
+
+function renderAdmin(){
+
+    const orders=JSON.parse(
+        localStorage.getItem("ff_store_orders") || "[]"
+    );
+
+    const box=document.getElementById("adminOrders");
+
+    if(!orders.length){
+
+        box.innerHTML=
+            `<p class="note">No orders available.</p>`;
+
+        return;
+    }
+
+    box.innerHTML="";
+
+    orders.slice().reverse().forEach(order=>{
+
+        box.innerHTML+=`
+
+        <div class="admin-card">
+
+            <b>${order.id}</b><br><br>
+
+            Product: ${order.product}<br>
+            UID: ${order.uid}<br>
+            Player: ${order.playerName || "-"}<br>
+            Amount: ₹${order.price}<br>
+            Payment: ${order.payment.toUpperCase()}<br>
+            ${order.network
+                ? "Network: "+order.network+"<br>"
+                : ""}
+            Transaction: ${order.transaction}<br>
+            Status: ${order.status}<br>
+            Date: ${order.created}
+
+            <button
+                class="approve"
+                onclick="changeStatus('${order.id}','Approved')">
+                ✓ Approve Order
+            </button>
+
+            <button
+                class="reject"
+                onclick="changeStatus('${order.id}','Rejected')">
+                ✕ Reject Order
+            </button>
+
+        </div>
+
+        `;
+
+    });
+}
+
+function changeStatus(id,status){
+
+    const orders=JSON.parse(
+        localStorage.getItem("ff_store_orders") || "[]"
+    );
+
+    const updated=orders.map(order=>{
+
+        if(order.id===id){
+            order.status=status;
+        }
+
+        return order;
+
+    });
+
+    localStorage.setItem(
+        "ff_store_orders",
+        JSON.stringify(updated)
+    );
+
+    renderOrders();
+    renderAdmin();
+}
+
+/* =========================
+   START
+========================= */
+
+renderProducts();
+renderOrders();
+
+</script>
+
+</body>
+</html>
+```
